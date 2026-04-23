@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import auth, classes, students, attendance, grades
+from app.database import engine, Base
+import app.models  # noqa: F401
 
 app = FastAPI(title="Klasio API", version="0.1.0")
+
+Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
