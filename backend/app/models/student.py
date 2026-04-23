@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database import Base
@@ -11,6 +11,7 @@ class Student(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     student_number = Column(Integer, nullable=False)
+    notes = Column(Text, nullable=True)
     class_id = Column(Integer, ForeignKey("classes.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

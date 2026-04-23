@@ -4,6 +4,7 @@ import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import DashboardPage from './pages/dashboard/DashboardPage'
 import ClassesPage from './pages/classes/ClassesPage'
+import StudentsPage from './pages/students/StudentsPage'
 import AttendancePage from './pages/attendance/AttendancePage'
 import GradesPage from './pages/grades/GradesPage'
 import Layout from './components/layout/Layout'
@@ -28,6 +29,7 @@ export default function App() {
       >
         <Route index element={<DashboardPage />} />
         <Route path="classes" element={<ClassesPage />} />
+        <Route path="classes/:classId/students" element={<StudentsPage />} />
         <Route path="classes/:classId/attendance" element={<AttendancePage />} />
         <Route path="classes/:classId/grades" element={<GradesPage />} />
       </Route>

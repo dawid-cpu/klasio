@@ -101,6 +101,10 @@ export default function ClassesPage() {
               </button>
             </div>
             <div className="flex gap-2">
+              <Link to={`/classes/${c.id}/students`}
+                className="flex-1 text-center text-xs bg-gray-50 text-gray-700 px-3 py-2 rounded-lg font-medium hover:bg-gray-100">
+                Uczniowie
+              </Link>
               <Link to={`/classes/${c.id}/attendance`}
                 className="flex-1 text-center text-xs bg-primary-50 text-primary-700 px-3 py-2 rounded-lg font-medium hover:bg-primary-100">
                 Frekwencja
