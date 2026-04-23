@@ -30,11 +30,12 @@ export default function GradesPage() {
   const addGrade = useMutation({
     mutationFn: (data) => api.post(`/classes/${classId}/grades`, data),
     onSuccess: () => {
-      qc.invalidateQueries(['grades-summary', classId])
+      qc.invalidateQueries({ queryKey: ['grades-summary', classId] })
       setGradeForm({ value: '', student_id: '', category_id: '', description: '' })
       setShowGradeForm(false)
       toast.success('Ocena dodana')
     },
+    onError: (err) => toast.error(err.response?.data?.detail || 'Błąd dodawania oceny'),
   })
 
   const atRisk = summary.filter((s) => s.at_risk)

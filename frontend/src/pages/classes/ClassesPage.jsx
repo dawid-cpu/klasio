@@ -18,19 +18,21 @@ export default function ClassesPage() {
   const createClass = useMutation({
     mutationFn: (data) => api.post('/classes/', data),
     onSuccess: () => {
-      qc.invalidateQueries(['classes'])
+      qc.invalidateQueries({ queryKey: ['classes'] })
       setForm({ name: '', subject: '' })
       setShowForm(false)
       toast.success('Klasa utworzona')
     },
+    onError: (err) => toast.error(err.response?.data?.detail || 'Błąd tworzenia klasy'),
   })
 
   const deleteClass = useMutation({
     mutationFn: (id) => api.delete(`/classes/${id}`),
     onSuccess: () => {
-      qc.invalidateQueries(['classes'])
+      qc.invalidateQueries({ queryKey: ['classes'] })
       toast.success('Klasa usunięta')
     },
+    onError: (err) => toast.error(err.response?.data?.detail || 'Błąd usuwania klasy'),
   })
 
   return (

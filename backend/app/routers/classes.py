@@ -24,6 +24,14 @@ def create_class(data: ClassCreate, db: Session = Depends(get_db), user: User = 
     return ClassOut(id=class_.id, name=class_.name, subject=class_.subject, student_count=0)
 
 
+@router.get("/{class_id}", response_model=ClassOut)
+def get_class(class_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    class_ = db.query(Class).filter(Class.id == class_id, Class.teacher_id == user.id).first()
+    if not class_:
+        raise HTTPException(status_code=404, detail="Class not found")
+    return ClassOut(id=class_.id, name=class_.name, subject=class_.subject, student_count=len(class_.students))
+
+
 @router.delete("/{class_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_class(class_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     class_ = db.query(Class).filter(Class.id == class_id, Class.teacher_id == user.id).first()

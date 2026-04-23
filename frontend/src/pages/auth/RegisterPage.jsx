@@ -59,7 +59,7 @@ export default function RegisterPage() {
             />
           </div>
           <button
-            type="submit" disabled={loading}
+            type="submit" disabled={loading || form.password.length < 8 || !form.email || !form.full_name}
             className="w-full bg-primary-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50"
           >
             {loading ? 'Tworzenie konta...' : 'Zarejestruj się'}

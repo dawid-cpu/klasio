@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database import Base
@@ -13,6 +13,8 @@ class Student(Base):
     student_number = Column(Integer, nullable=False)
     class_id = Column(Integer, ForeignKey("classes.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    __table_args__ = (UniqueConstraint("student_number", "class_id", name="uq_student_number_per_class"),)
 
     class_ = relationship("Class", back_populates="students")
     attendances = relationship("Attendance", back_populates="student", cascade="all, delete-orphan")

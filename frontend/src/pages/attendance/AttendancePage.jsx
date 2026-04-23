@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import api from '../../api/client'
@@ -20,12 +20,15 @@ export default function AttendancePage() {
   const { data: students = [] } = useQuery({
     queryKey: ['students', classId],
     queryFn: () => api.get(`/classes/${classId}/students/`).then((r) => r.data),
-    onSuccess: (data) => {
-      const initial = {}
-      data.forEach((s) => { initial[s.id] = 'present' })
-      setStatuses(initial)
-    },
   })
+
+  useEffect(() => {
+    if (students.length > 0 && Object.keys(statuses).length === 0) {
+      const initial = {}
+      students.forEach((s) => { initial[s.id] = 'present' })
+      setStatuses(initial)
+    }
+  }, [students])
 
   const saveMutation = useMutation({
     mutationFn: () => api.post(`/classes/${classId}/attendance/`, {
@@ -33,6 +36,7 @@ export default function AttendancePage() {
       entries: Object.entries(statuses).map(([id, status]) => ({ student_id: Number(id), status })),
     }),
     onSuccess: () => toast.success('Frekwencja zapisana!'),
+    onError: (err) => toast.error(err.response?.data?.detail || 'Błąd zapisu frekwencji'),
   })
 
   const toggle = (id, status) => setStatuses((prev) => ({ ...prev, [id]: status }))

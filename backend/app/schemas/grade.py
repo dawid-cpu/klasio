@@ -1,10 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 
 class GradeCategoryCreate(BaseModel):
-    name: str
-    weight: float
+    name: str = Field(..., min_length=1, max_length=100)
+    weight: float = Field(..., gt=0)
 
 
 class GradeCategoryOut(BaseModel):
@@ -16,7 +16,7 @@ class GradeCategoryOut(BaseModel):
 
 
 class GradeCreate(BaseModel):
-    value: float
+    value: float = Field(..., ge=1.0, le=6.0)
     student_id: int
     category_id: int
     description: Optional[str] = None
